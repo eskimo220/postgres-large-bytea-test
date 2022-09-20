@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!--<classPathEntry-->
+            <!--location="/home/wanghaoqi/.m2/repository/org/postgresql/postgresql/9.4.1212/postgresql-9.4.1212.jar"/>-->
+    <context id="my" targetRuntime="MyBatis3">
+        <property name="beginningDelimiter" value="&quot;"/>
+        <property name="endingDelimiter" value="&quot;"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+        <plugin type="com.softwareloop.mybatis.generator.plugins.LombokPlugin">
+
+            <!-- enable annotations -->
+            <property name="builder" value="false"/>
+            <!-- annotation's option(boolean) -->
+            <property name="builder.fluent" value="true"/>
+            <!-- annotation's option(String) -->
+            <property name="builder.builderMethodName" value="myBuilder"/>
+
+            <property name="accessors" value="true"/>
+            <!-- annotation's option(array of String) -->
+            <property name="accessors.prefix" value="m_, _"/>
+
+            <!-- disable annotations -->
+            <property name="allArgsConstructor" value="false"/>
+            <property name="toString" value="true"/>
+
+        </plugin>
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="org.postgresql.Driver"
+                        connectionURL="jdbc:postgresql://localhost:15432/postgres?user=postgres&amp;password=123456"/>
+
+        <javaTypeResolver>
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.example.demo.entity"
+                            targetProject="src/main/java/">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mybatis.mapper"
+                         targetProject="src/main/resources/">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <javaClientGenerator targetPackage="com.example.demo.mapper"
+                             targetProject="src/main/java/" type="XMLMAPPER">
+            <property name="enableSubPackages" value="false"/>
+
+        </javaClientGenerator>
+        <table schema="public" tableName="test"  delimitAllColumns="true"/>
+        <table schema="public" tableName="test2"  delimitAllColumns="true"/>
+
+
+    </context>
+</generatorConfiguration>

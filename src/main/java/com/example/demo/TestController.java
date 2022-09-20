@@ -1,0 +1,59 @@
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.sql.SQLException;
+
+
+@Controller
+public class TestController {
+
+    @Autowired
+    private TestService testService;
+
+    @GetMapping("/")
+    public ResponseEntity get() throws SQLException {
+
+//        TestExample testExample = new TestExample();
+//        testExample.createCriteria().andIdIsNotNull();
+//
+//        mapper.selectByExample(testExample);
+
+        testService.test2();
+//        mapper.countByExample();
+
+        return ResponseEntity.ok("12345");
+    }
+
+
+    @GetMapping("/test")
+    public ResponseEntity get2() throws SQLException {
+
+//        TestExample testExample = new TestExample();
+//        testExample.createCriteria().andIdIsNotNull();
+//
+//        mapper.selectByExample(testExample);
+
+        testService.test();
+//        mapper.countByExample();
+
+        return ResponseEntity.ok("12345");
+    }
+
+    @GetMapping("/test2")
+    public ResponseEntity get3() throws SQLException {
+
+//        TestExample testExample = new TestExample();
+//        testExample.createCriteria().andIdIsNotNull();
+//
+//        mapper.selectByExample(testExample);
+
+        testService.test3();
+//        mapper.countByExample();
+
+        return ResponseEntity.ok("12345");
+    }
+}
