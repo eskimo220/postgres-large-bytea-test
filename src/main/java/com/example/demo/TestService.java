@@ -33,12 +33,12 @@ public class TestService {
 
     public void test() {
 
-        TestExample testExample = new TestExample();
-        testExample.createCriteria().andIdEqualTo("10");
-
-        mapper.selectByExampleWithBLOBs(testExample);
-        mapper.selectByExampleWithBLOBs(testExample);
-        mapper.selectByExampleWithBLOBs(testExample);
+//        TestExample testExample = new TestExample();
+//        testExample.createCriteria().andIdEqualTo("1");
+//
+//        mapper.selectByExampleWithBLOBs(testExample);
+//        mapper.selectByExampleWithBLOBs(testExample);
+//        mapper.selectByExampleWithBLOBs(testExample);
 
         IntStream.range(100, 200).forEach(o -> {
             TestExample testExample2 = new TestExample();
@@ -76,7 +76,7 @@ public class TestService {
             mapper.selectByPrimaryKey2("1", resultContext -> {
 
                 byte[] bytes = resultContext.getResultObject().getFile();
-                log.info(HexUtils.toHexString(Arrays.copyOf(bytes, 8)));
+//                log.info(HexUtils.toHexString(Arrays.copyOf(bytes, 8)));
                 try {
                     fos.write(bytes);
                 } catch (IOException e) {
@@ -89,4 +89,23 @@ public class TestService {
         }
     }
 
+    public void test4() {
+
+        try (FileOutputStream fos = new FileOutputStream("./xxx.pdf")) {
+
+            IntStream.range(0, 40).forEach(o -> {
+                try {
+                    fos.write(mapper.selectByPrimaryKey4(o).getFile());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

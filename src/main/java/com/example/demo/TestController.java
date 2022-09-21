@@ -51,7 +51,18 @@ public class TestController {
 //
 //        mapper.selectByExample(testExample);
 
+        long startTime = System.currentTimeMillis();
+        testService.test4();
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("処理時間 ： " + (endTime - startTime) + "ミリ秒");
+
+
+        startTime = System.currentTimeMillis();
         testService.test3();
+
+        endTime = System.currentTimeMillis();
+        System.out.println("処理時間 ： " + (endTime - startTime) + "ミリ秒");
 //        mapper.countByExample();
 
         return ResponseEntity.ok("12345");

@@ -145,7 +145,7 @@
     from public.test
     where "id" = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectByPrimaryKey2" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs" fetchSize="1">
+  <select id="selectByPrimaryKey2" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs" fetchSize="10">
 
     WITH f AS (SELECT file f
     FROM public.test
@@ -153,10 +153,26 @@
     SELECT
     substring((SELECT f
     FROM f) FROM n FOR 1024 * 1024) as "file"
-    FROM generate_series(1, length((SELECT f
-    FROM f)), 1024 * 1024) n;
+    FROM generate_series(1, 40 * 1024 * 1024, 1024 * 1024) n;
 
   </select>
+
+  <select id="selectByPrimaryKey3" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs" fetchSize="1">
+
+    SELECT string_nchars(file,1024 * 1024) as "file"
+    FROM public.test
+    WHERE "id" = #{id,jdbcType=VARCHAR}
+
+  </select>
+
+  <select id="selectByPrimaryKey4" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs" flushCache="true">
+
+    SELECT substring(file from 1 + 1024 * 1024 * #{id} for 1024*1024) as "file"
+    FROM public.test
+    WHERE "id" = '1'
+
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
       WARNING - @mbg.generated
