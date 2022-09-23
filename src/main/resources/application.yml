@@ -2,9 +2,13 @@ spring:
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:15432/postgres?user=postgres&password=123456}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 1
 
 mybatis:
   mapper-locations: classpath*:mybatis/mapper/*.xml
   type-aliases-package: com.example.demo.mapper
+  configuration:
+    default-executor-type: reuse
 
 logging.level.com.example.demo.mapper: ${LOGGING_LEVEL_DB:debug}

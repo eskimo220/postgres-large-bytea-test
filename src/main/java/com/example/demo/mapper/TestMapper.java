@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.ResultHandler;
 
 public interface TestMapper {
@@ -59,6 +60,10 @@ public interface TestMapper {
 
 
     void selectByPrimaryKey2(String id, ResultHandler<Test> resultHandler);
+
+//    List<Test> selectByPrimaryKey2(String id);
+
+    Cursor<Test> selectByPrimaryKey2(String id);
 
     void selectByPrimaryKey3(String id, ResultHandler<Test> resultHandler);
 

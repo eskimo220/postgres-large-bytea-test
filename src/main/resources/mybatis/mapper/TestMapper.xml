@@ -145,15 +145,16 @@
     from public.test
     where "id" = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectByPrimaryKey2" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs" fetchSize="10">
+  <select id="selectByPrimaryKey2" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs" fetchSize="1">
 
     WITH f AS (SELECT file f
     FROM public.test
     WHERE "id" = #{id,jdbcType=VARCHAR})
     SELECT
     substring((SELECT f
-    FROM f) FROM n FOR 1024 * 1024) as "file"
-    FROM generate_series(1, 40 * 1024 * 1024, 1024 * 1024) n;
+    FROM f) FROM n FOR 1024*1024) as "file"
+    FROM generate_series(1, length((SELECT f
+                                    FROM f)), 1024*1024) n;
 
   </select>
 
@@ -165,11 +166,11 @@
 
   </select>
 
-  <select id="selectByPrimaryKey4" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs" flushCache="true">
+  <select id="selectByPrimaryKey4" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs" flushCache="true" >
 
     SELECT substring(file from 1 + 1024 * 1024 * #{id} for 1024*1024) as "file"
     FROM public.test
-    WHERE "id" = '1'
+    WHERE "id" = '10'
 
   </select>
 

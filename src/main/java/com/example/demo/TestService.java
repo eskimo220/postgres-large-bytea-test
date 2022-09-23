@@ -4,6 +4,7 @@ import com.example.demo.entity.Test;
 import com.example.demo.entity.TestExample;
 import com.example.demo.mapper.TestMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.tomcat.util.buf.HexUtils;
 import org.postgresql.copy.CopyManager;
@@ -17,7 +18,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -72,40 +76,77 @@ public class TestService {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        try (FileOutputStream fos = new FileOutputStream("./xxx.pdf")) {
-            mapper.selectByPrimaryKey2("1", resultContext -> {
+        long startTime,endTime;
 
-                byte[] bytes = resultContext.getResultObject().getFile();
-//                log.info(HexUtils.toHexString(Arrays.copyOf(bytes, 8)));
-                try {
-                    fos.write(bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        startTime = System.currentTimeMillis();
+        mapper.selectByPrimaryKey2("10", resultContext -> {
+            resultContext.getResultObject().getFile();
+        });
+        endTime = System.currentTimeMillis();
+        System.out.println("resultContext処理時間 ： " + (endTime - startTime) + "ミリ秒");
 
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        startTime = System.currentTimeMillis();
+        mapper.selectByPrimaryKey2("10").forEach(Test::getFile);
+        endTime = System.currentTimeMillis();
+        System.out.println("cursor処理時間 ： " + (endTime - startTime) + "ミリ秒");
+
+//        String a = mapper.selectByPrimaryKey2("10").stream().limit(10).map(o->HexUtils.toHexString(Arrays.copyOf(o.getFile(), 10))).collect(Collectors.joining(" "));
+
+//        log.info(a);
     }
 
     public void test4() {
 
-        try (FileOutputStream fos = new FileOutputStream("./xxx.pdf")) {
+        System.out.println("!!!!!!");
 
-            IntStream.range(0, 40).forEach(o -> {
-                try {
-                    fos.write(mapper.selectByPrimaryKey4(o).getFile());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+        System.out.println(this.sqlSession);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<String> head = new ArrayList<>();
+        IntStream.range(0, 400).forEach(o -> {
+            Test a = mapper.selectByPrimaryKey4(o);
+
+            if (o < 10) {
+                head.add(HexUtils.toHexString(Arrays.copyOf(a.getFile(), 10)));
+            }
+        });
+
+        log.info(String.join(" ", head));
+//        try (FileOutputStream fos = new FileOutputStream("./xxx.pdf")) {
+//
+//            IntStream.range(0, 400).forEach(o -> {
+//                try {
+//                    fos.write(mapper.selectByPrimaryKey4(o).getFile());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
+
+    public void test5() {
+
+        mapper.selectByPrimaryKey("10");
+//        try (FileOutputStream fos = new FileOutputStream("./xxx.pdf")) {
+//
+//            try (Cursor<Test> persons = mapper.selectByPrimaryKey2("10")) {
+//                persons.forEach(o -> {
+//                    try {
+//                        fos.write(o.getFile());
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                });
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
+
 }

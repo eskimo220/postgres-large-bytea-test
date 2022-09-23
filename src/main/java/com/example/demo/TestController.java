@@ -14,6 +14,9 @@ public class TestController {
     @Autowired
     private TestService testService;
 
+    @Autowired
+    private JDBCService jdbcService;
+
     @GetMapping("/")
     public ResponseEntity get() throws SQLException {
 
@@ -50,19 +53,32 @@ public class TestController {
 //        testExample.createCriteria().andIdIsNotNull();
 //
 //        mapper.selectByExample(testExample);
+        long startTime,endTime;
 
-        long startTime = System.currentTimeMillis();
+//        startTime = System.currentTimeMillis();
+//        testService.test5();
+//
+//        endTime = System.currentTimeMillis();
+//        System.out.println("処理時間 ： " + (endTime - startTime) + "ミリ秒");
+
+
+        startTime = System.currentTimeMillis();
         testService.test4();
 
-        long endTime = System.currentTimeMillis();
+        endTime = System.currentTimeMillis();
         System.out.println("処理時間 ： " + (endTime - startTime) + "ミリ秒");
 
 
         startTime = System.currentTimeMillis();
         testService.test3();
-
         endTime = System.currentTimeMillis();
         System.out.println("処理時間 ： " + (endTime - startTime) + "ミリ秒");
+
+        startTime = System.currentTimeMillis();
+        jdbcService.testCursor();
+        endTime = System.currentTimeMillis();
+        System.out.println("処理時間 ： " + (endTime - startTime) + "ミリ秒");
+
 //        mapper.countByExample();
 
         return ResponseEntity.ok("12345");
